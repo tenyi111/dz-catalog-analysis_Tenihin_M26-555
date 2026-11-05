@@ -23,6 +23,8 @@ movies = [
      "rating": 7.3, "duration_min": 129, "actors": ["P. Diaz", "T. Chalamet"]},
 ]
 
+
+
 def average_rating(movies: list[dict]) -> float:
 
     """Средняя оценка по каталогу, округлённая до 1 знака."""
@@ -33,9 +35,11 @@ def average_rating(movies: list[dict]) -> float:
     total = sum(movie["rating"] for movie in movies)
     return round(total / len(movies), 1)
 
+
+
 def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple[int, int, int]:
 
-    """Самый старый фильм в годах, самый новый и среднее, округленное до целого"""
+    """Самый старый фильм в годах, самый новый и среднее, округленное до целого."""
 
     if not movies:
         raise ValueError("The list is empty")
@@ -51,9 +55,23 @@ def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple[int
 
     return (oldest_age, newest_age, average)
 
+
+
+def duration_in_hours(minutes: int) -> str:
+
+    """Переводит минуты в строку формата "2ч 35м"."""
+
+    if not isinstance(minutes, int):
+        raise TypeError("Minutes must be int")
+
+    return f"{minutes//60}ч {minutes%60}м"
+
+
+
 def main():
     print(f"Средняя оценка по каталогу: {average_rating(movies)}")
     print(f"Самый старый фильм в годах, самый новый и среднее: {catalog_age_stats(movies)}")
+    print(duration_in_hours(98))
 
 
 if __name__ == "__main__":
