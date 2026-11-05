@@ -101,6 +101,33 @@ def decade_label(year: int) -> str:
 
 
 
+def not_comedy(movies):
+
+    """Функциональное выражение, выводящее названия всех фильмов, не являющихся комедиями"""
+        
+    for movie in movies:
+        if "comedy" in movie["genres"]:
+            continue
+        print(movie["title"])
+
+
+
+def first_masterpiece(movies):
+
+    """Функциональное выражение, находящее первый по порядку фильм шедевр (оценка > 9.0)"""
+        
+    i = 0
+    while i < len(movies):
+        movie = movies[i]
+        if rating_tier(movie["rating"]) == "шедевр":
+            print(f"\n{movie['title']} шедевр")
+            break
+        i += 1
+    else:
+        print("Шедевров не найдено")
+
+
+
 def count_long_movies(movies: list[dict], threshold: int = 120) -> int:
 
     """Возвращает количество фильмов длиннее threshold."""
@@ -147,7 +174,7 @@ def format_report_line(movie: dict) -> str:
     if not isinstance(movie, dict):
         raise TypeError("Movie must be dict")
 
-    title = movie["title"]
+    title = normalize_title(movie["title"])
     year = movie["year"]
     rating = movie["rating"]
     duration = duration_in_hours(movie["duration_min"])
@@ -208,6 +235,16 @@ def actor_filmography(movies: list[dict]) -> dict:
 
 
 
+def dict_generator(movies):
+
+    """Функциональное генераторное выражние, которое строит словарь фильмов с рейтингом выше среднего"""
+
+    threshold = average_rating(movies)
+    title_rating = {movie["title"]: movie["rating"] for movie in movies if movie["rating"] > threshold}
+    print(title_rating)
+
+
+
 def all_genres(movies: list[dict]) -> set[str]:
 
     """Возвращает множество всех жанров."""
@@ -245,51 +282,53 @@ def iter_high_rated(movies: list[dict], min_rating: float = 8.0) -> Iterator[str
         if movie["rating"] >= min_rating:
             yield movie
 
-
-def main():
-    #print(f"Средняя оценка по каталогу: {average_rating(movies)}")
-    #print(f"Самый старый фильм в годах, самый новый и среднее: {catalog_age_stats(movies)}")
-    #print(duration_in_hours(98))
-    #print(rating_tier(4.9))
-    #print(decade_label(2013))
-    #print(count_long_movies(movies))
-
-    for movie in movies:
-        if "comedy" in movie["genres"]:
-            continue
-        print(movie["title"])
-
-    i = 0
-    while i < len(movies):
-        movie = movies[i]
-        if rating_tier(movie["rating"]) == "шедевр":
-            print(f"\n{movie['title']} шедевр")
-            break
-        i += 1
-    else:
-        print("Шедевров не найдено")
-
-    #print(normalize_title("wow os it"))
-    #print(make_slug("Wow os Tt"))
-    #print(format_report_line(movies[5]))
-    #print(titles_sorted_by_rating(movies))
-    #print(top_n_by_rating(movies))
-    #print(count_by_genre(movies))
-    #print(actor_filmography(movies))
-
-    threshold = average_rating(movies)
-    title_rating = {movie["title"]: movie["rating"] for movie in movies if movie["rating"] > threshold}
-
-    #print(title_rating)
-    #print(all_genres(movies))
-    #print(common_actors(movies[0], movies[9]))
-    #print(genres_only_in_one(movies[0:2], movies[4:7]))
-
+def start_iter_high_rated():
     for movie in iter_high_rated(movies):
         print(format_report_line(movie))
 
+
+
+def sum_generator(movies):
+
+    """Функциональное генераторное выражение, которое считает суммарную длительность всех фильмов с рейтингом выше 7"""
+
     time_sum = sum(m["duration_min"] for m in movies if m["rating"] > 7)
     print(time_sum)
+
+
+
+def build_report(movies):
+
+    """Итоговая функция - печатает отчёт."""
+
+    print("ОТЧЁТ ПО КАТАЛОГУ")
+    print(f"Средний рейтинг: {average_rating(movies)}")
+    print(f"Средний возраст фильмов: {catalog_age_stats(movies)[2]} лет")
+    print()
+
+    print("Топ-3 фильма:")
+    for title, rating in top_n_by_rating(movies):
+        for movie in movies:
+            if movie["title"] == title:
+                print(f"  {format_report_line(movie)}")
+                break
+    print()
+
+    print("Фильмов по жанрам:")
+    counts = count_by_genre(movies)
+    for genre, count in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0])):
+        print(f"  {genre} - {count}")
+    print()
+
+    genres = sorted(all_genres(movies))
+    print(f"Все жанры каталога: {', '.join(genres)}")
+
+
+
+def main():
+
+    build_report(movies)
+
 
 
 if __name__ == "__main__":
