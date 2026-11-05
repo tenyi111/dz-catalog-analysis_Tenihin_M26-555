@@ -99,12 +99,41 @@ def decade_label(year: int) -> str:
             return "старый"
 
 
+
+def count_long_movies(movies: list[dict], threshold: int = 120) -> int:
+
+    """Возвращает количество фильмов длиннее threshold."""
+
+    count = 0
+    for movie in movies:
+        if movie["duration_min"] > threshold:
+            count += 1
+    return count
+
+
+
 def main():
     #print(f"Средняя оценка по каталогу: {average_rating(movies)}")
     #print(f"Самый старый фильм в годах, самый новый и среднее: {catalog_age_stats(movies)}")
     #print(duration_in_hours(98))
     #print(rating_tier(4.9))
-    print(decade_label(2013))
+    #print(decade_label(2013))
+    #print(count_long_movies(movies))
+
+    for movie in movies:
+        if "comedy" in movie["genres"]:
+            continue
+        print(movie["title"])
+
+    i = 0
+    while i < len(movies):
+        movie = movies[i]
+        if rating_tier(movie["rating"]) == "шедевр":
+            print(f"\n{movie['title']} шедевр")
+            break
+        i += 1
+    else:
+        print("Шедевров не найдено")
 
 
 if __name__ == "__main__":
