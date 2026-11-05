@@ -1,3 +1,5 @@
+from math import ceil
+
 movies = [
     {"title": "The Dune Chronicles", "year": 2021, "genres": {"sci-fi", "drama"},
      "rating": 8.6, "duration_min": 155, "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
@@ -26,13 +28,32 @@ def average_rating(movies: list[dict]) -> float:
     """Средняя оценка по каталогу, округлённая до 1 знака."""
 
     if not movies:
-        return 0.0
+        raise ValueError("The list is empty")
 
     total = sum(movie["rating"] for movie in movies)
     return round(total / len(movies), 1)
 
+def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple[int, int, int]:
+
+    """Самый старый фильм в годах, самый новый и среднее, округленное до целого"""
+
+    if not movies:
+        raise ValueError("The list is empty")
+
+    oldest = min(movies, key=lambda m: m["year"])
+    newest = max(movies, key=lambda m: m["year"])
+
+    oldest_age = current_year - oldest["year"]
+    newest_age = current_year - newest["year"]
+
+    total_age = sum(current_year - movie["year"] for movie in movies)
+    average = ceil(total_age / len(movies))
+
+    return (oldest_age, newest_age, average)
+
 def main():
     print(f"Средняя оценка по каталогу: {average_rating(movies)}")
+    print(f"Самый старый фильм в годах, самый новый и среднее: {catalog_age_stats(movies)}")
 
 
 if __name__ == "__main__":
