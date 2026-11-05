@@ -207,6 +207,32 @@ def actor_filmography(movies: list[dict]) -> dict:
 
 
 
+def all_genres(movies: list[dict]) -> set[str]:
+
+    """Возвращает множество всех жанров."""
+
+    genres = set()
+
+    for movie in movies:
+            genres.update(movie["genres"])
+
+    return genres
+
+
+
+def common_actors(movie1: dict, movie2: dict) -> set[str]:
+
+    """Возвращает множество актеров, снимавшихся в обоих фильмах."""
+
+    return set(movie1["actors"]) & set(movie2["actors"])
+
+
+
+def genres_only_in_one(movies_a: list[dict], movies_b: list[dict]) -> set[str]:
+
+    """Возвращает жанры, встречающиеся в movies_a, но не встречающиеся в movies_b"""
+
+    return all_genres(movies_a) - all_genres(movies_b)
 
 
 
@@ -246,6 +272,9 @@ def main():
     title_rating = {movie["title"]: movie["rating"] for movie in movies if movie["rating"] > threshold}
 
     #print(title_rating)
+    #print(all_genres(movies))
+    #print(common_actors(movies[0], movies[9]))
+    print(genres_only_in_one(movies[0:2], movies[4:7]))
 
 
 if __name__ == "__main__":
