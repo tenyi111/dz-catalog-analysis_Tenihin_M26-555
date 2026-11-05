@@ -1,4 +1,5 @@
 from math import ceil
+from collections.abc import Iterator
 
 movies = [
     {"title": "The Dune Chronicles", "year": 2021, "genres": {"sci-fi", "drama"},
@@ -236,6 +237,14 @@ def genres_only_in_one(movies_a: list[dict], movies_b: list[dict]) -> set[str]:
 
 
 
+def iter_high_rated(movies: list[dict], min_rating: float = 8.0) -> Iterator[str]:
+
+    """Лениво отдаёт фильмы с рейтингом не ниже min_rating."""
+
+    for movie in movies:
+        if movie["rating"] >= min_rating:
+            yield movie
+
 
 def main():
     #print(f"Средняя оценка по каталогу: {average_rating(movies)}")
@@ -274,7 +283,13 @@ def main():
     #print(title_rating)
     #print(all_genres(movies))
     #print(common_actors(movies[0], movies[9]))
-    print(genres_only_in_one(movies[0:2], movies[4:7]))
+    #print(genres_only_in_one(movies[0:2], movies[4:7]))
+
+    for movie in iter_high_rated(movies):
+        print(format_report_line(movie))
+
+    time_sum = sum(m["duration_min"] for m in movies if m["rating"] > 7)
+    print(time_sum)
 
 
 if __name__ == "__main__":
