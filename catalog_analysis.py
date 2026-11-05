@@ -1,9 +1,10 @@
-from math import ceil
 from collections.abc import Iterator
+from math import ceil
 
 movies = [
     {"title": "The Dune Chronicles", "year": 2021, "genres": {"sci-fi", "drama"},
-     "rating": 8.6, "duration_min": 155, "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
+     "rating": 8.6, "duration_min": 155, 
+     "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
     {"title": "Kitchen Stories", "year": 2019, "genres": {"comedy", "drama"},
      "rating": 7.1, "duration_min": 98, "actors": ["A. Novak", "M. Ferguson"]},
     {"title": "silent hours", "year": 2016, "genres": {"thriller", "drama"},
@@ -38,9 +39,11 @@ def average_rating(movies: list[dict]) -> float:
 
 
 
-def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple[int, int, int]:
+def catalog_age_stats(
+        movies: list[dict], current_year: int = 2026) -> tuple[int, int, int]:
 
-    """Возвращает самый старый фильм в годах, самый новый и среднее, округленное до целого."""
+    """Возвращает самый старый фильм в годах, 
+    самый новый и среднее, округленное до целого."""
 
     if not movies:
         raise ValueError("The list is empty")
@@ -103,7 +106,8 @@ def decade_label(year: int) -> str:
 
 def not_comedy(movies):
 
-    """Функциональное выражение, выводящее названия всех фильмов, не являющихся комедиями"""
+    """Функциональное выражение, выводящее названия 
+    всех фильмов, не являющихся комедиями"""
         
     for movie in movies:
         if "comedy" in movie["genres"]:
@@ -114,7 +118,8 @@ def not_comedy(movies):
 
 def first_masterpiece(movies):
 
-    """Функциональное выражение, находящее первый по порядку фильм шедевр (оценка > 9.0)"""
+    """Функциональное выражение, 
+    находящее первый по порядку фильм шедевр (оценка > 9.0)"""
         
     i = 0
     while i < len(movies):
@@ -186,7 +191,8 @@ def format_report_line(movie: dict) -> str:
 
 def titles_sorted_by_rating(movies: list[dict]) -> list[str]:
 
-    """Возвращает список названий фильмов, отсортированных по убыванию рейтинга."""
+    """Возвращает список названий фильмов, 
+    отсортированных по убыванию рейтинга."""
 
     sorted_movies = sorted(movies, key=lambda m: m["rating"], reverse=True)
 
@@ -237,10 +243,15 @@ def actor_filmography(movies: list[dict]) -> dict:
 
 def dict_generator(movies):
 
-    """Функциональное генераторное выражние, которое строит словарь фильмов с рейтингом выше среднего"""
+    """Функциональное генераторное выражние, 
+    которое строит словарь фильмов с рейтингом выше среднего"""
 
     threshold = average_rating(movies)
-    title_rating = {movie["title"]: movie["rating"] for movie in movies if movie["rating"] > threshold}
+    title_rating = {
+        movie["title"]: movie["rating"]
+        for movie in movies
+        if movie["rating"] > threshold
+        }
     print(title_rating)
 
 
@@ -268,7 +279,8 @@ def common_actors(movie1: dict, movie2: dict) -> set[str]:
 
 def genres_only_in_one(movies_a: list[dict], movies_b: list[dict]) -> set[str]:
 
-    """Возвращает жанры, встречающиеся в movies_a, но не встречающиеся в movies_b"""
+    """Возвращает жанры, встречающиеся в movies_a, 
+    но не встречающиеся в movies_b"""
 
     return all_genres(movies_a) - all_genres(movies_b)
 
@@ -290,7 +302,8 @@ def start_iter_high_rated():
 
 def sum_generator(movies):
 
-    """Функциональное генераторное выражение, которое считает суммарную длительность всех фильмов с рейтингом выше 7"""
+    """Функциональное генераторное выражение, 
+    которое считает суммарную длительность всех фильмов с рейтингом выше 7"""
 
     time_sum = sum(m["duration_min"] for m in movies if m["rating"] > 7)
     print(time_sum)
