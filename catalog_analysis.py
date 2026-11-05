@@ -155,6 +155,28 @@ def format_report_line(movie: dict) -> str:
     return f'"{title}" ({year}) — {rating}/10, {duration}, жанры: {genres}'
 
 
+
+def titles_sorted_by_rating(movies: list[dict]) -> list[str]:
+
+    """Возвращает список названий фильмов, отсортированных по убыванию рейтинга."""
+
+    sorted_movies = sorted(movies, key=lambda m: m["rating"], reverse=True)
+
+    return [movie["title"] for movie in sorted_movies]
+
+
+
+def top_n_by_rating(movies: list[dict], n: int = 3) -> list[tuple[str, float]]:
+
+    """Возвращает список из n кортежей (title, rating) - топ по рейтингу."""
+
+    sorted_movies = sorted(movies, key=lambda m: m["rating"], reverse=True)
+
+    return [(movie["title"], movie["rating"]) for movie in sorted_movies[:n]]
+
+
+
+
 def main():
     #print(f"Средняя оценка по каталогу: {average_rating(movies)}")
     #print(f"Самый старый фильм в годах, самый новый и среднее: {catalog_age_stats(movies)}")
@@ -180,7 +202,9 @@ def main():
 
     #print(normalize_title("wow os it"))
     #print(make_slug("Wow os Tt"))
-    print(format_report_line(movies[5]))
+    #print(format_report_line(movies[5]))
+    #print(titles_sorted_by_rating(movies))
+    print(top_n_by_rating(movies))
 
 
 if __name__ == "__main__":
