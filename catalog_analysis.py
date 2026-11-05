@@ -176,6 +176,40 @@ def top_n_by_rating(movies: list[dict], n: int = 3) -> list[tuple[str, float]]:
 
 
 
+def count_by_genre(movies: list[dict]) -> dict:
+
+    """Возвращает словарь {жанр: количество фильмов}."""
+
+    genre_counts = {}
+
+    for movie in movies:
+        for genre in movie["genres"]:
+            genre_counts[genre] = genre_counts.get(genre, 0) + 1
+
+    return genre_counts
+
+
+
+def actor_filmography(movies: list[dict]) -> dict:
+
+    """Возвращает словарь {актер: [список названий фильмов]}."""
+
+    filmography = {}
+
+    for movie in movies:
+        for actor in movie["actors"]:
+            if filmography.get(actor) is None:
+                filmography[actor] = [movie["title"]]
+            else:
+                filmography[actor].append(movie["title"])
+
+    return filmography
+
+
+
+
+
+
 
 def main():
     #print(f"Средняя оценка по каталогу: {average_rating(movies)}")
@@ -204,7 +238,14 @@ def main():
     #print(make_slug("Wow os Tt"))
     #print(format_report_line(movies[5]))
     #print(titles_sorted_by_rating(movies))
-    print(top_n_by_rating(movies))
+    #print(top_n_by_rating(movies))
+    #print(count_by_genre(movies))
+    #print(actor_filmography(movies))
+
+    threshold = average_rating(movies)
+    title_rating = {movie["title"]: movie["rating"] for movie in movies if movie["rating"] > threshold}
+
+    #print(title_rating)
 
 
 if __name__ == "__main__":
