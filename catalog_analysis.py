@@ -27,7 +27,7 @@ movies = [
 
 def average_rating(movies: list[dict]) -> float:
 
-    """Средняя оценка по каталогу, округлённая до 1 знака."""
+    """Возвращает среднюю оценку по каталогу, округлённую до 1 знака."""
 
     if not movies:
         raise ValueError("The list is empty")
@@ -39,7 +39,7 @@ def average_rating(movies: list[dict]) -> float:
 
 def catalog_age_stats(movies: list[dict], current_year: int = 2026) -> tuple[int, int, int]:
 
-    """Самый старый фильм в годах, самый новый и среднее, округленное до целого."""
+    """Возвращает самый старый фильм в годах, самый новый и среднее, округленное до целого."""
 
     if not movies:
         raise ValueError("The list is empty")
@@ -68,10 +68,43 @@ def duration_in_hours(minutes: int) -> str:
 
 
 
+def rating_tier(rating: float) -> str:
+
+    """Возвращает категорию оценки: шедевр / хорошо / средне / слабо."""
+
+    if not isinstance(rating, (int, float)):
+        raise TypeError("Rating must be int or float")
+
+    if rating >= 9:
+        return "шедевр"
+    elif rating >= 7:
+        return "хорошо"
+    return "слабо" if rating < 5 else "средне"
+
+
+
+def decade_label(year: int) -> str:
+
+    """Возвращает категорию: новые / недавние / старые."""
+
+    if not isinstance(year, int):
+        raise TypeError("Year must be int")
+
+    match year:
+        case _ if year > 2020:
+            return "новый"
+        case _ if 2015 <= year <= 2020:
+            return "недавний"
+        case _:
+            return "старый"
+
+
 def main():
-    print(f"Средняя оценка по каталогу: {average_rating(movies)}")
-    print(f"Самый старый фильм в годах, самый новый и среднее: {catalog_age_stats(movies)}")
-    print(duration_in_hours(98))
+    #print(f"Средняя оценка по каталогу: {average_rating(movies)}")
+    #print(f"Самый старый фильм в годах, самый новый и среднее: {catalog_age_stats(movies)}")
+    #print(duration_in_hours(98))
+    #print(rating_tier(4.9))
+    print(decade_label(2013))
 
 
 if __name__ == "__main__":
