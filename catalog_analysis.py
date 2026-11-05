@@ -112,6 +112,49 @@ def count_long_movies(movies: list[dict], threshold: int = 120) -> int:
 
 
 
+def normalize_title(title: str) -> str:
+
+    """Приводит строку к формату Title Case."""
+
+    if not isinstance(title, str):
+        raise TypeError("Title must be str")
+
+    words = title.split()
+
+    res = []
+    for word in words:
+        res.append(word[0].upper() + word[1:].lower())
+    return " ".join(res)
+
+
+
+def make_slug(title: str) -> str:
+
+    """Превращает нормализованное название в «слаг»."""
+
+    if not isinstance(title, str):
+        raise TypeError("Title must be str")
+
+    return title.lower().replace(" ", "-")
+
+
+
+def format_report_line(movie: dict) -> str:
+
+    """Возвращает единую строку с описанием фильма."""
+
+    if not isinstance(movie, dict):
+        raise TypeError("Movie must be dict")
+
+    title = movie["title"]
+    year = movie["year"]
+    rating = movie["rating"]
+    duration = duration_in_hours(movie["duration_min"])
+    genres = ", ".join(sorted(movie["genres"]))
+
+    return f'"{title}" ({year}) — {rating}/10, {duration}, жанры: {genres}'
+
+
 def main():
     #print(f"Средняя оценка по каталогу: {average_rating(movies)}")
     #print(f"Самый старый фильм в годах, самый новый и среднее: {catalog_age_stats(movies)}")
@@ -134,6 +177,10 @@ def main():
         i += 1
     else:
         print("Шедевров не найдено")
+
+    #print(normalize_title("wow os it"))
+    #print(make_slug("Wow os Tt"))
+    print(format_report_line(movies[5]))
 
 
 if __name__ == "__main__":
